@@ -1,0 +1,16 @@
+{
+  "name": "pro_backend",
+  "version": "1.0.0",
+  "description": "Start Professniol Work",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "nodemon src/index.js"
+  },
+  "author": "Jeeshan Khan",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "prettier": "^3.1.0"
+  }
+}
