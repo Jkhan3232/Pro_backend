@@ -1,0 +1,1 @@
+export const connectDb = "Professniol_Db"
