@@ -1,9 +1,16 @@
 import { Router } from "express";
 import {
-    loginUser, logoutUser, registerUser,
-    refreshAccessToken, changeCurrentPassword,
-    updateAccountDetails, updateUserAvatar,
-    updateUserCoverImage, getCurrentUser
+    registerUser,
+    loginUser,
+    logoutUser,
+    refreshAccessToken,
+    changeCurrentPassword,
+    getCurrentUser,
+    updateAccountDetails,
+    updateUserAvatar,
+    updateUserCoverImage,
+    getUserChannelProfile,
+    getWatchHistory,
 
 } from "../controllers/user.controller.js";
 import { upload } from "../middleware/multer.middlewere.js"
@@ -11,6 +18,7 @@ import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = Router()
 
+// Endpoint to register a new user
 router.route("/register").post(
     upload.fields([
         {
@@ -24,27 +32,28 @@ router.route("/register").post(
     ]),
     registerUser
 )
-
+// Endpoint to log in a user
 router.route("/login").post(loginUser)
+
+// Endpoint to log out a user
 router.route("/logout").post(verifyJWT, logoutUser)
+// Endpoint to refresh access token
 router.route("/refresh-token").post(refreshAccessToken)
-router.route("/update-password").patch(verifyJWT, changeCurrentPassword)
-router.route("/update-profile").patch(verifyJWT, updateAccountDetails)
+// Endpoint to change user's current password
+router.route("/change-password").post(verifyJWT, changeCurrentPassword)
+// Endpoint to get current user details
+router.route("/current-user").get(verifyJWT, getCurrentUser)
+// Endpoint to update user's account details
+router.route("/update-account").patch(verifyJWT, updateAccountDetails)
 
-router.route
-    ("/updateUserAvatar").patch(verifyJWT, upload.fields([{
-        name: "avatar",
-        maxCount: 1
-    }])
-        , updateUserAvatar)
-router.route
-    ("/updateUserCoverImage").patch(verifyJWT, upload.fields([{
-        name: "coverImage",
-        maxCount: 1
-    }]),
-        updateUserCoverImage)
+// Endpoint to update user's avatar
+router.route("/avatar").patch(verifyJWT, upload.single("avatar"), updateUserAvatar)
+// Endpoint to update user's cover image
+router.route("/cover-image").patch(verifyJWT, upload.single("/coverImage"), updateUserCoverImage)
 
-router.route("/profile").get(verifyJWT, getCurrentUser)
-
+// Endpoint to get user's channel profile
+router.route("/c/:username").get(verifyJWT, getUserChannelProfile)
+// Endpoint to get user's watch history
+router.route("/history").get(verifyJWT, getWatchHistory)
 
 export default router
